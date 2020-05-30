@@ -1,8 +1,9 @@
 #include "Snake.h"
+#include <iostream>
 
 constexpr float kStepSize{ 20.0f };
 
-Snake::Snake(sf::Vector2f pos, sf::Color col) : m_Color(col)
+Snake::Snake(sf::Vector2f pos, sf::Color col) : m_SColor(col)
 {
     m_Segments.push_back(pos);
 
@@ -12,11 +13,31 @@ Snake::Snake(sf::Vector2f pos, sf::Color col) : m_Color(col)
 void Snake::Render(sf::RenderWindow& window)
 {
     sf::CircleShape shape(kStepSize/2.0f); //Makes sure the size of the snakes head is always the same as how much it moves.
-    shape.setFillColor(m_Color);
+    shape.setFillColor(m_SColor);
     for (sf::Vector2f pos: m_Segments)
     {
         shape.setPosition(pos);
         window.draw(shape);
+    }
+}
+
+bool Snake::CheckCollision(Snake& otherSnake)
+{
+    std::list<sf::Vector2f>::iterator it;
+    for (it = m_Segments.begin(); it != m_Segments.end(); ++it)
+    {
+        for (auto& otherSegment : otherSnake.GetSegments())
+        {
+            for (auto& currentSegment : m_Segments)
+            {
+                if (currentSegment == otherSegment)
+                {
+                    std::cout << "Collision has occured";
+                    return true; // Collision has happened.
+                }
+            }
+        }
+        return false;
     }
 }
 

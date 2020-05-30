@@ -14,7 +14,7 @@ class Snake
 {
 private:
 	std::list<sf::Vector2f> m_Segments;
-	sf::Color m_Color;
+	sf::Color m_SColor;
 	eDirection m_Direction{ eDirection::eNorth };
 	int m_GrowAmount{ 4 };
 public:
@@ -22,6 +22,10 @@ public:
 	void ChangeDirection(eDirection newDirection);
 	void Update();
 	void Render(sf::RenderWindow& window);
-	void Eat();
-	bool CheckCollision(Snake& other);
+	const std::list<sf::Vector2f>& GetSegments()
+	{
+		return m_Segments;
+	}
+	bool CheckCollision(Snake& otherSnake);
 };
+

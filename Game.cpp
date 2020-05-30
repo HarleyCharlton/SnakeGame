@@ -8,7 +8,9 @@ using namespace std;
 void Game::run()
 {
    // All SFML types and functions are contained in the sf namespace
+
     srand(static_cast<unsigned int>(time(0))); // Stops things spawning in same place every time
+
    // Create an instance of the SFML RenderWindow type which represents the display
    // and initialise its size and title text
     sf::RenderWindow window(sf::VideoMode(800, 600), "C++ Snake ICA : W9049120");
@@ -75,11 +77,12 @@ void Game::run()
                 if (!m_Food[i].IsAlive())
                 {
                     sf::Vector2f pos;
-
+                    sf::Color col;
+                    
                     pos.x = (float)(rand() % 40) * 20;
                     pos.y = (float)(rand() % 30) * 20;
 
-                    m_Food[i].Spawn(pos);
+                    m_Food[i].Spawn(pos, col);
                     break;
                 }
             }
@@ -88,6 +91,18 @@ void Game::run()
         // VIS
         // We must clear the window each time around the loop
         window.clear();
+
+        // The walls
+        sf::RectangleShape Wall_North(sf::Vector2f(800.f, 20.f));
+        sf::RectangleShape Wall_South(sf::Vector2f(800.f, 20.f));
+        Wall_South.setPosition(0.f, 580.f);
+        sf::RectangleShape Wall_West(sf::Vector2f(20.f, 600.f));
+        sf::RectangleShape Wall_East(sf::Vector2f(20.f, 600.f));
+        Wall_East.setPosition(780.f, 0.f);
+        window.draw(Wall_North);
+        window.draw(Wall_South);
+        window.draw(Wall_West);
+        window.draw(Wall_East);
 
         for (Snake* s : snakes)
             s->Render(window);
